@@ -2054,14 +2054,16 @@
                 return this;
             };
             R["un" + eventName] = elproto["un" + eventName] = function (fn) {
-                var events = this.events,
-                    l = events.length;
-                while (l--) if (events[l].name == eventName && events[l].f == fn) {
-                    events[l].unbind();
-                    events.splice(l, 1);
-                    !events.length && delete this.events;
-                    return this;
-                }
+		if(this.events != null) {
+		    var events = this.events,
+			l = events.length;
+                    while (l--) if (events[l].name == eventName && events[l].f == fn) {
+			events[l].unbind();
+			events.splice(l, 1);
+			!events.length && delete this.events;
+			return this;
+                    }
+		}
                 return this;
             };
         })(events[i]);
