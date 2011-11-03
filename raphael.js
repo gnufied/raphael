@@ -1966,38 +1966,38 @@
             scrollX = g.doc.documentElement.scrollLeft || g.doc.body.scrollLeft,
             dragi,
             j = drag.length;
-        while (j--) {
-            dragi = drag[j];
-            if (supportsTouch) {
-                var i = e.touches.length,
-                    touch;
-                while (i--) {
-                    touch = e.touches[i];
-                    if (touch.identifier == dragi.el._drag.id) {
-                        x = touch.clientX;
-                        y = touch.clientY;
-                        (e.originalEvent ? e.originalEvent : e).preventDefault();
-                        break;
-                    }
+    
+        dragi = drag[0];
+        if (supportsTouch) {
+            var i = e.touches.length,
+            touch;
+            while (i--) {
+                touch = e.touches[i];
+                if (touch.identifier == dragi.el._drag.id) {
+                    x = touch.clientX;
+                    y = touch.clientY;
+                    (e.originalEvent ? e.originalEvent : e).preventDefault();
+                    break;
                 }
-            } else {
-                e.preventDefault();
             }
-            var node = dragi.el.node,
-                o,
-                next = node.nextSibling,
-                parent = node.parentNode,
-                display = node.style.display;
-            g.win.opera && parent.removeChild(node);
-            node.style.display = "none";
-            o = dragi.el.paper.getElementByPoint(x, y);
-            node.style.display = display;
-            g.win.opera && (next ? parent.insertBefore(node, next) : parent.appendChild(node));
-            o && eve("drag.over." + dragi.el.id, dragi.el, o);
-            x += scrollX;
-            y += scrollY;
-            eve("drag.move." + dragi.el.id, dragi.move_scope || dragi.el, x - dragi.el._drag.x, y - dragi.el._drag.y, x, y, e);
+        } else {
+            e.preventDefault();
         }
+        var node = dragi.el.node,
+        o,
+        next = node.nextSibling,
+        parent = node.parentNode,
+        display = node.style.display;
+        g.win.opera && parent.removeChild(node);
+        node.style.display = "none";
+        o = dragi.el.paper.getElementByPoint(x, y);
+        node.style.display = display;
+        g.win.opera && (next ? parent.insertBefore(node, next) : parent.appendChild(node));
+        o && eve("drag.over." + dragi.el.id, dragi.el, o);
+        x += scrollX;
+        y += scrollY;
+        eve("drag.move." + dragi.el.id, dragi.move_scope || dragi.el, x - dragi.el._drag.x, y - dragi.el._drag.y, x, y, e);
+    
     },
     dragUp = function (e) {
         R.unmousemove(dragMove).unmouseup(dragUp);
